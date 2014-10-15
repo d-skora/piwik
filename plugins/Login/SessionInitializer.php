@@ -114,13 +114,6 @@ class SessionInitializer
         $authResult = $this->doAuthenticateSession($auth);
 
         if (!$authResult->wasAuthenticationSuccessful()) {
-            Piwik::postEvent(
-                'Login.authenticate.failed',
-                array(
-                    $authResult->getIdentity(),
-                    $authResult->getTokenAuth()
-                )
-            );
             $this->processFailedSession($rememberMe);
         } else {
             $this->processSuccessfulSession($authResult, $rememberMe);
@@ -193,6 +186,8 @@ class SessionInitializer
      */
     protected function processFailedSession($rememberMe)
     {
+        Piwik::postEvent('Login.authenticate.failed');
+
         $cookie = $this->getAuthCookie($rememberMe);
         $cookie->delete();
 
