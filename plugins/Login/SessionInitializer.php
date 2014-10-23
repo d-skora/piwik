@@ -186,6 +186,8 @@ class SessionInitializer
      */
     protected function processFailedSession($rememberMe)
     {
+        Piwik::postEvent('Login.authenticate.failed');
+
         $cookie = $this->getAuthCookie($rememberMe);
         $cookie->delete();
 
